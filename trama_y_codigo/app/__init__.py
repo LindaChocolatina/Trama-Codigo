@@ -72,8 +72,14 @@ def create_app(entorno='default'):
     # ── Crear tablas de la base de datos ──
     with app.app_context():
         from app import models  # noqa: F401
-        db.create_all()
-        _sembrar_datos_iniciales(app)
+        try:
+            db.create_all()
+            _sembrar_datos_iniciales(app)
+        except Exception as e:
+            # La DB puede estar temporalmente inaccesible (ej: Supabase pausada).
+            # El jardín arranca de todas formas y reintentará en cada request.
+            logging.warning(f"[ARRANQUE] No se pudo conectar a la BD: {e}")
+            print(f"[ADVERTENCIA] DB no disponible al arrancar: {e}")
 
     def get_log_path():
         if os.name == 'nt': # Windows local
