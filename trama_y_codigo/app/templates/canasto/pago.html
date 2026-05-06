@@ -25,7 +25,6 @@
                         <img src="{{ url_for('static', filename='img/qr_nequi.jpeg') }}" alt="QR Nequi" 
                              style="width: 200px; height: 200px; border: 5px solid white; border-radius: 12px; box-shadow: var(--sombra-sutil); margin-bottom: 1rem;">
                         
-                        <p style="font-size: 1.2rem; font-weight: bold; color: var(--verde-musgo); letter-spacing: 2px;">300 000 0000</p>
                         <p style="font-size: 0.8rem; opacity: 0.7;">A nombre de Trama & Código</p>
                     </div>
                     
@@ -44,7 +43,7 @@
                 <!-- Opcion PayPal -->
                 <div style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: var(--espacio-2xl);">
                     <h3 style="margin-bottom: 1rem; color: var(--vinotinto);">2. PayPal</h3>
-                    <p style="margin-bottom: 1rem; font-size: 0.9rem;">Paga de forma rápida y segura con tu cuenta de PayPal o Tarjeta de Crédito.</p>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem;">Paga de forma rápida y segura con tu cuenta de PayPal.</p>
                     
                     <div id="paypal-button-container"></div>
                 </div>
@@ -56,7 +55,7 @@
 {% endblock %}
 
 {% block js_extra %}
-<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD&disable-funding=card,credit"></script>
 <script>
     // Asumimos conversión 1 USD = 4000 COP para el demo (puedes ajustar esta lógica luego)
     const totalUSD = ({{ pedido.total }} / 4000).toFixed(2);
