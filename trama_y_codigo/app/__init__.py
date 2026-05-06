@@ -93,9 +93,6 @@ def create_app(entorno='default'):
             pass
         return "Error Interno del Servidor. Se ha registrado el detalle en el log del servidor.", 500
 
-        """
-
-
     return app
 
 

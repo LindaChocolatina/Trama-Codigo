@@ -7,7 +7,7 @@ from app.models.semillero import ProyectoSoftware
 from app.models.tramas import ProyectoFibras
 from app.models.refugio import EntradaBitacora, Comentario
 from app.models.bosque import ProductoBosque
-from app.models.canasto import CarritoMimbre, Pedido
+from app.models.canasto import CarritoMimbre, Pedido, DetallePedido
 from app.models.micelio import ConexionMicelio
 
 __all__ = [
