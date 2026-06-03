@@ -28,16 +28,6 @@ Este jardín ha sido plantado sobre cimientos sólidos y flexibles:
 
 ---
 
-## 🌱 Cómo plantar este jardín localmente
-
-1. Clona el repositorio.
-2. Crea tu ambiente virtual: `python -m venv venv`.
-3. Activa la semilla: `.\venv\Scripts\activate` (Windows).
-4. Instala los nutrientes: `pip install -r requirements.txt`.
-5. Ejecuta el germinador: `python run.py`.
-
----
-
 ## 🌐 Visita el Jardín
 Puedes ver el proyecto floreciendo en tiempo real aquí:  
 👉 **[https://trama-codigo.onrender.com](https://trama-codigo.onrender.com)**
