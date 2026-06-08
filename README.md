@@ -30,7 +30,7 @@ Este jardín ha sido plantado sobre cimientos sólidos y flexibles:
 
 ## 🌐 Visita el Jardín
 Puedes ver el proyecto floreciendo en tiempo real aquí:  
-👉 **[https://trama-codigo.onrender.com](https://trama-codigo.onrender.com)**
+**[https://trama-codigo.onrender.com](https://trama-codigo.onrender.com)**
 
 ---
 
