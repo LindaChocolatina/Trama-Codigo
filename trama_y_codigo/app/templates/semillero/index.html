@@ -16,7 +16,7 @@
             <article class="card-jardin animar-entrada" style="animation-delay: {{ loop.index0 * 0.15 }}s;">
                 <div class="card-jardin-cuerpo">
                     {% if p.imagen_url %}
-                    <img src="{{ url_for('static', filename='uploads/imagenes/' ~ p.imagen_url) }}" alt="{{ p.titulo }}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 1rem;">
+                    <img src="{{ p.imagen_url | url_archivo('imagenes') }}" alt="{{ p.titulo }}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 1rem;">
                     {% endif %}
                     <p class="texto-manuscrito" style="font-size: 1rem; margin-bottom: 0.5rem;">🌸 {{ p.nombre_flor }}</p>
                     <h3 class="card-jardin-titulo">{{ p.titulo }}</h3>

@@ -10,7 +10,7 @@
         </div>
         <div class="refugio-contenido">
             {% if entrada.imagen_url %}
-            <img src="{{ url_for('static', filename='uploads/imagenes/' ~ entrada.imagen_url) }}" alt="Imagen de {{ entrada.titulo_entrada }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 2rem;">
+            <img src="{{ entrada.imagen_url | url_archivo('imagenes') }}" alt="Imagen de {{ entrada.titulo_entrada }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 2rem;">
             {% endif %}
             {{ entrada.contenido_calido }}
         </div>

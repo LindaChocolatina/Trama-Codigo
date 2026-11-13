@@ -2,10 +2,10 @@
 Blueprint: El Canasto de Mimbre — Carrito de Compras y Checkout.
 Los tesoros recolectados esperan en un canasto tejido a mano para ser llevados a casa.
 """
-import os, secrets
+import secrets
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, jsonify, current_app
-from werkzeug.utils import secure_filename
 from app.extensions import db
+from app.services.almacen import guardar_archivo
 from app.models.bosque import ProductoBosque
 from app.models.canasto import Pedido, DetallePedido
 from app.models.usuario import Usuario
@@ -152,13 +152,8 @@ def confirmar_nequi():
         return redirect(url_for('canasto.pago', pedido_id=pedido.id))
 
     if file:
-        filename = secure_filename(f"nequi_pedido_{pedido.id}_{file.filename}")
-        upload_path = current_app.config['UPLOAD_FOLDER']
-        os.makedirs(upload_path, exist_ok=True)
-        file.save(os.path.join(upload_path, filename))
-
         pedido.metodo_pago = 'nequi'
-        pedido.comprobante_url = filename
+        pedido.comprobante_url = guardar_archivo(file, 'comprobantes', f"nequi_pedido_{pedido.id}")
         pedido.estado_pago = 'pendiente' # La jardinera debe verificarlo
         
         # Restar el stock si es físico

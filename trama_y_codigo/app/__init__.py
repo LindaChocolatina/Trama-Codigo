@@ -61,6 +61,9 @@ def create_app(entorno='default'):
     app.register_blueprint(jardinera_bp)
     app.register_blueprint(auth.bp)
 
+    from app.services.almacen import url_archivo
+    app.add_template_filter(url_archivo, 'url_archivo')
+
     # ── Context Processor: Inyectar el estado del mundo en todas las plantillas ──
     @app.context_processor
     def inyectar_estado_mundo():
@@ -114,24 +117,26 @@ def _sembrar_datos_iniciales(app):
     from app.models.bosque import ProductoBosque
 
     # ── Asegurar la existencia de la Jardinera (admin) ──
+    # La contraseña vive en la variable de entorno ADMIN_PASSWORD, nunca en el código.
+    contrasena = os.environ.get('ADMIN_PASSWORD')
     jardinera = Usuario.query.filter_by(rol='administradora').first()
     if not jardinera:
-        jardinera = Usuario(
-            username='LindaChocolatina',
-            email='lindasioc@gmail.com',
-            rol='administradora'
-        )
-        jardinera.plantar_contrasena('Juanita1509:)')
-        db.session.add(jardinera)
+        if contrasena:
+            jardinera = Usuario(
+                username='LindaChocolatina',
+                email='lindasioc@gmail.com',
+                rol='administradora'
+            )
+            jardinera.plantar_contrasena(contrasena)
+            db.session.add(jardinera)
+            db.session.commit()
+            print('[OK] Jardinera creada exitosamente.')
+        else:
+            print('[ADVERTENCIA] Falta ADMIN_PASSWORD: la Jardinera no fue creada.')
+    elif contrasena and not jardinera.verificar_contrasena(contrasena):
+        jardinera.plantar_contrasena(contrasena)
         db.session.commit()
-        print('[OK] Jardinera creada exitosamente.')
-    else:
-        # Forzar actualización por si se cambió algo en el código
-        jardinera.username = 'LindaChocolatina'
-        jardinera.email = 'lindasioc@gmail.com'
-        jardinera.plantar_contrasena('Juanita1509:)')
-        db.session.commit()
-        print('[OK] Credenciales de Jardinera actualizadas.')
+        print('[OK] Contraseña de la Jardinera actualizada.')
     
     # Si ya hay otros datos, no sembrar el resto
     if ProyectoSoftware.query.first():

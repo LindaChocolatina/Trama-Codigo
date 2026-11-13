@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             {% if pedido.comprobante_url %}
-                            <a href="{{ url_for('static', filename='uploads/comprobantes/' + pedido.comprobante_url) }}" target="_blank" style="text-decoration: underline;">Ver imagen</a>
+                            <a href="{{ pedido.comprobante_url | url_archivo('comprobantes') }}" target="_blank" style="text-decoration: underline;">Ver imagen</a>
                             {% else %}
                             <span style="opacity: 0.5;">No hay</span>
                             {% endif %}

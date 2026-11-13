@@ -4,10 +4,20 @@ Solo la guardiana del jardín puede plantar, podar y cuidar el ecosistema.
 """
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from app.extensions import db
+from app.extensions import db, login_manager
 from app.models.usuario import Usuario
 
 bp = Blueprint('jardinera', __name__, template_folder='../templates/jardinera')
+
+
+@bp.before_request
+def solo_la_jardinera():
+    """Todo el panel, incluido el CRUD, es solo para la jardinera."""
+    if not current_user.is_authenticated:
+        return login_manager.unauthorized()
+    if not current_user.es_jardinera:
+        flash('Solo la jardinera puede acceder a este rincón.', 'error')
+        return redirect(url_for('jardin.escena'))
 
 @bp.route('/jardinera')
 @login_required
@@ -64,21 +74,12 @@ def aprobar_pedido(pedido_id):
 # RUTAS CRUD — Gestión Autónoma del Ecosistema
 # ═══════════════════════════════════════════════════
 
-import os
-from werkzeug.utils import secure_filename
-from flask import current_app
 from app.forms import FlorForm, TramaForm, BitacoraForm, TesoroForm
+from app.services.almacen import guardar_archivo
 
 def guardar_imagen(file_obj, prefijo):
-    """Guarda una imagen en el servidor y retorna el nombre del archivo."""
-    if file_obj and file_obj.filename != '':
-        filename = secure_filename(f"{prefijo}_{file_obj.filename}")
-        # La ruta base de uploads está en app/static/uploads/imagenes
-        upload_path = os.path.join(current_app.root_path, 'static', 'uploads', 'imagenes')
-        os.makedirs(upload_path, exist_ok=True)
-        file_obj.save(os.path.join(upload_path, filename))
-        return filename
-    return None
+    """Guarda una imagen en el álbum y retorna lo que debe ir a la base."""
+    return guardar_archivo(file_obj, 'imagenes', prefijo)
 
 # ── CRUD: FLORES (Software) ──
 @bp.route('/jardinera/flores')

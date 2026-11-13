@@ -14,7 +14,7 @@
             {% if imagen_actual %}
             <div style="margin-bottom: 2rem; text-align: center;">
                 <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Imagen actual:</p>
-                <img src="{{ url_for('static', filename='uploads/imagenes/' ~ imagen_actual) }}" alt="Imagen actual" style="max-width: 200px; border-radius: var(--radio-suave); box-shadow: var(--sombra-sutil);">
+                <img src="{{ imagen_actual | url_archivo('imagenes') }}" alt="Imagen actual" style="max-width: 200px; border-radius: var(--radio-suave); box-shadow: var(--sombra-sutil);">
             </div>
             {% endif %}
 

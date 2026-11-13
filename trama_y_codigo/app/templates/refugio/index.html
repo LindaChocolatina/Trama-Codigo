@@ -16,7 +16,7 @@
             <article class="card-jardin animar-entrada" style="animation-delay: {{ loop.index0 * 0.15 }}s;">
                 <div class="card-jardin-cuerpo">
                     {% if entrada.imagen_url %}
-                    <img src="{{ url_for('static', filename='uploads/imagenes/' ~ entrada.imagen_url) }}" alt="{{ entrada.titulo_entrada }}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 1rem;">
+                    <img src="{{ entrada.imagen_url | url_archivo('imagenes') }}" alt="{{ entrada.titulo_entrada }}" style="width: 100%; height: 180px; object-fit: cover; border-radius: var(--radio-suave); margin-bottom: 1rem;">
                     {% endif %}
                     <span class="refugio-humor">{{ entrada.humor_del_dia or '✨' }}</span>
                     <h3 class="card-jardin-titulo">{{ entrada.titulo_entrada }}</h3>

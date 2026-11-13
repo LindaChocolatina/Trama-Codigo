@@ -1,8 +1,19 @@
-from flask import Blueprint, current_app, db
+from flask import Blueprint, current_app, abort
+from flask_login import current_user
+from app.extensions import db, login_manager
 from sqlalchemy import text
 import os, sys, datetime
 
 bp = Blueprint('debug', __name__)
+
+
+@bp.before_request
+def solo_la_jardinera():
+    """El diagnóstico expone datos internos: solo la jardinera puede verlo."""
+    if not current_user.is_authenticated:
+        return login_manager.unauthorized()
+    if not current_user.es_jardinera:
+        abort(404)
 
 def get_log_path():
     if os.name == 'nt':
