@@ -133,7 +133,15 @@ def pago(pedido_id):
         flash('Estos tesoros ya han sido intercambiados.', 'info')
         return redirect(url_for('canasto.index'))
     
-    return render_template('canasto/pago.html', pedido=pedido, paypal_client_id=current_app.config['PAYPAL_CLIENT_ID'])
+    return render_template('canasto/pago.html', pedido=pedido,
+                           paypal_client_id=current_app.config['PAYPAL_CLIENT_ID'],
+                           paypal_activo=paypal_activo())
+
+
+def paypal_activo():
+    """PayPal solo se ofrece con un Client ID real; 'test' es el modo de pruebas."""
+    client_id = current_app.config.get('PAYPAL_CLIENT_ID')
+    return bool(client_id) and client_id != 'test'
 
 
 @bp.route('/canasto/confirmar-nequi', methods=['POST'])
@@ -171,6 +179,9 @@ def confirmar_nequi():
 @bp.route('/canasto/confirmar-paypal', methods=['POST'])
 def confirmar_paypal():
     """Paso 3b: El pago mágico instantáneo de PayPal."""
+    if not paypal_activo():
+        return jsonify({'success': False, 'error': 'PayPal no está disponible.'}), 403
+
     data = request.get_json()
     pedido_id = data.get('pedido_id')
     transaction_id = data.get('transaction_id')

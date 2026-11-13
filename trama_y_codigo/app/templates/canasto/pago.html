@@ -13,7 +13,7 @@
                 <p>Pedido #{{ pedido.id }}</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--espacio-2xl);">
+            <div style="display: grid; grid-template-columns: {{ '1fr 1fr' if paypal_activo else '1fr' }}; gap: var(--espacio-2xl);">
                 
                 <!-- Opcion Nequi -->
                 <div>
@@ -40,6 +40,7 @@
                     </form>
                 </div>
 
+                {% if paypal_activo %}
                 <!-- Opcion PayPal -->
                 <div style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: var(--espacio-2xl);">
                     <h3 style="margin-bottom: 1rem; color: var(--vinotinto);">2. PayPal</h3>
@@ -47,6 +48,7 @@
                     
                     <div id="paypal-button-container"></div>
                 </div>
+                {% endif %}
 
             </div>
         </div>
@@ -55,6 +57,7 @@
 {% endblock %}
 
 {% block js_extra %}
+{% if paypal_activo %}
 <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD&disable-funding=card,credit"></script>
 <script>
     // Asumimos conversión 1 USD = 4000 COP para el demo (puedes ajustar esta lógica luego)
@@ -92,4 +95,5 @@
         }
     }).render('#paypal-button-container');
 </script>
+{% endif %}
 {% endblock %}
